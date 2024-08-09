@@ -4,56 +4,52 @@ using System.Collections.Generic;
 using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class PlayerMovement : MonoBehaviour
 {
-    Vector2 position = new Vector2();
+    Vector2Int position = new Vector2Int();
     int speed = 3;
 
     // Start is called before the first frame update
     void Start()
     {
-        GetAvailableCoords();
+        List<Vector2Int> test = GetAvailableCoords();
+        TilemapManager.singleton.Highlight(test);
     }
     public void MovePlayer(int x, int y)
     {
-        position = new Vector2(x ,y);
+        position = new Vector2Int(x ,y);
 
         float newX = x + .5f;
         float newY = y + .5f;
         transform.position = new Vector3(newX, newY, 0);
     }
 
-    private List<Vector2> GetAvailableCoords()
+    private List<Vector2Int> GetAvailableCoords()
     {
-        Vector2[] directions = {Vector2.up, Vector2.down, Vector2.left, Vector2.right, 
+        Vector2Int[] directions = {Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right, 
         new(-1, 1), new(1, 1), new(-1, -1), new(1, -1)};
 
-        List<Vector2> output = new();
-        Queue<Tuple<Vector2, int>> queue = new();
+        List<Vector2Int> output = new();
+        Queue<Tuple<Vector2Int, int>> queue = new();
 
-        queue.Enqueue(new Tuple<Vector2, int>(position, 0));
+        queue.Enqueue(new Tuple<Vector2Int, int>(position, 0));
 
 
         while(queue.Count != 0){
-            Tuple<Vector2, int> curPos = queue.Dequeue();
+            Tuple<Vector2Int, int> curPos = queue.Dequeue();
             if(curPos.Item2 > speed || output.Contains(curPos.Item1)) { continue; }
 
             output.Add(curPos.Item1);
 
             foreach (var curDir in directions)
             {
-                Vector2 curPosHolder = curPos.Item1 + curDir;
-                queue.Enqueue(new Tuple<Vector2, int>(curPosHolder, curPos.Item2 + 1));
+                Vector2Int curPosHolder = curPos.Item1 + curDir;
+                queue.Enqueue(new Tuple<Vector2Int, int>(curPosHolder, curPos.Item2 + 1));
             }
         }
 
         return output;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
