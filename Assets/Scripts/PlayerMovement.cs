@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         List<Vector2Int> test = GetAvailableCoords();
-        TilemapManager.singleton.Highlight(test);
+        StartCoroutine(TilemapManager.singleton.WaitForClick(test));
     }
     public void MovePlayer(int x, int y)
     {
