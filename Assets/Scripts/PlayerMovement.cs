@@ -12,17 +12,20 @@ public class PlayerMovement : MonoBehaviour
     int speed = 3;
 
     // Start is called before the first frame update
-    void Start()
+    public void OnStartTurn()
     {
-        List<Vector2Int> test = GetAvailableCoords();
-        StartCoroutine(TilemapManager.singleton.WaitForClick(test));
+        StartCoroutine(GetMovement());
     }
-    public void MovePlayer(int x, int y)
+    IEnumerator GetMovement()
     {
-        position = new Vector2Int(x ,y);
-
-        float newX = x + .5f;
-        float newY = y + .5f;
+        List<Vector2Int> spaces = GetAvailableCoords();
+        yield return TilemapManager.singleton.WaitForClick(spaces);
+        MovePlayer(TilemapManager.singleton.ClickLoc);
+    }
+    public void MovePlayer(Vector2Int position)
+    {
+        float newX = position.x + .5f;
+        float newY = position.y + .5f;
         transform.position = new Vector3(newX, newY, 0);
     }
 

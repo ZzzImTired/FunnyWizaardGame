@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -29,6 +28,14 @@ public class TilemapManager : MonoBehaviour
             highlightMap.SetTile((Vector3Int)cur, highlightTile);
         }
     }
+
+    public void ReturnToBlank(List<Vector2Int> vector2s)
+    {
+        foreach (Vector2Int cur in vector2s)
+        {
+            highlightMap.SetTile((Vector3Int)cur, null);
+        }
+    }
     public IEnumerator WaitForClick(List<Vector2Int> vector2s)
     {
         IsWaiting = true;
@@ -52,8 +59,8 @@ public class TilemapManager : MonoBehaviour
             {
                 ClickLoc = (Vector2Int)curPos;
                 IsWaiting = false;
+                ReturnToBlank(vector2s);
             }
-
             yield return null;
         }
     }

@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] PlayerMovement playerMovement;
     // Start is called before the first frame update
-    void Start()
+    public void StartTurn()
     {
-        
+        playerMovement.OnStartTurn();
     }
 
     // Update is called once per frame
